@@ -1,0 +1,16 @@
+ul {
+    color: green;
+    list-style-type: none;
+}
+
+body{
+    background: rgb(130, 35, 35) url("../events/static/images/background.jpeg");/* no-repeat;*/
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-brand{
+    font-family: 'Satisfy', cursive;
+}
