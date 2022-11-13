@@ -38,7 +38,7 @@ class Task(models.Model):
         return reverse('events:index')
 
     def __str__(self):
-        return self.name + " " + self.event.name + " " + str(self.event.start)
+        return self.name + " for this event: " + self.event.name + " " + str(self.event.start)
 
 class Note(models.Model):
     details = models.CharField(max_length=250)
