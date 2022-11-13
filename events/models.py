@@ -9,7 +9,8 @@ DEADLINE = 'DE'
 FITNESS = 'FI'
 WORK = 'WO'
 FUN = 'FN'
-types=[(DEADLINE,"Deadline"), (FITNESS, "Fitness"), (WORK,"Work"), (FUN,"Fun")]
+ETC = 'ET'
+types=[(DEADLINE,"Deadline"), (FITNESS, "Fitness"), (WORK,"Work"), (FUN,"Fun"), (ETC,"etc.")]
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
