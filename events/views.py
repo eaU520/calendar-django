@@ -124,10 +124,14 @@ class LoginView(View):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(username=username,password=password)
-
+            print("Logged in?", user)
             if user is not None:
                 if user.is_active:
                     login(request,user)#logged in user
+                    # m = .objects.get(username=request.POST['username'])
+                    if user.check_password(request.POST['username']):
+                        request.session['member_id'] = user.get_username()
+                        return HttpResponse('You\'re logged in.')
                     #request.user.username => to get the logged in user's information
                     messages.info(request, "You have been successfully logged in")
                     return redirect('events:index')
@@ -136,8 +140,15 @@ class LoginView(View):
         return redirect('events:index')
 class LogOutView(View):
     def get(self,request):
-        logout(request)
-        messages.info(request, "You have been successfully logged out")
+        try:
+            print("Sessions", request.session['admin'])
+            # del request.session['user_id']
+            del request.session['member_id']
+            logout(request)
+            messages.info(request, "You have been successfully logged out")
+        except KeyError:
+            print("Error logging out")
+            pass
         return redirect('events:index')
 # TODO: Class versus function
 def search(request):
