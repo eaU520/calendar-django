@@ -122,7 +122,7 @@ class LoginView(View):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username,password=password)    
-        print(user)
+        # print(user)
         if user is not None:
             login(request,user)
             #if user.is_active:
@@ -136,12 +136,12 @@ class LoginView(View):
                 print("Logged in?", request.session['user_id'])
                 return redirect('events:index')
             else:
-                messages.info(request, "Incorrect credentials")
+                messages.info(request, "Incorrect credentials")#TODO: Messages as toast or clearer
         return redirect('events:index')
 class LogOutView(View):
     def get(self,request):
         try:
-            print("Sessions", request.session['admin'])
+            # print("Sessions", request.session['user_id'])
             del request.session['user_id']
             # del request.session['member_id']
             logout(request)
