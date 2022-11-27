@@ -1,9 +1,9 @@
 from http.client import HTTPResponse
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views import generic
 # Create your views here.
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 
 from django.template import loader
 
@@ -118,26 +118,36 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
     def post(self, request):
         form = self.form_class(request.POST)
-        
-        if form.is_valid():
-            user = form.save(commit=False)
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username,password=password)
-
-            if user is not None:
-                if user.is_active:
-                    login(request,user)#logged in user
-                    #request.user.username => to get the logged in user's information
-                    messages.info(request, "You have been successfully logged in")
-                    return redirect('events:index')
+        #if form.is_valid():
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username,password=password)    
+        # print(user)
+        if user is not None:
+            login(request,user)
+            #if user.is_active:
+            login(request,user)#logged in user
+            # m = .objects.get(username=request.POST['username'])
+            if user.check_password(request.POST['username']):
+                request.session['user_id'] = user.get_username()
+                # return HttpResponse('You\'re logged in.')
+                #request.user.username => to get the logged in user's information
+                messages.info(request, "You have been successfully logged in")
+                print("Logged in?", request.session['user_id'])
+                return redirect('events:index')
             else:
-                messages.info(request, "Incorrect credentials")
+                messages.info(request, "Incorrect credentials")#TODO: Messages as toast or clearer
         return redirect('events:index')
 class LogOutView(View):
     def get(self,request):
-        logout(request)
-        messages.info(request, "You have been successfully logged out")
+        try:
+            # print("Sessions", request.session['user_id'])
+            del request.session['user_id']
+            # del request.session['member_id']
+            logout(request)
+            messages.info(request, "You have been successfully logged out")
+        except KeyError:
+            print("Error logging out")
         return redirect('events:index')
 # TODO: Class versus function
 def search(request):
