@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <title>{% block title %}Events{% endblock %}</title>
     <!-- TODO: Title dynamic changes -->
-    {% with url_name=request.resolver_match.url_name %}
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
     <!-- Background styling, link to static files -->
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -20,6 +12,7 @@
 
 </head>
 <body>
+    {% with url_name=request.resolver_match.url_name %}
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- header -->
@@ -82,17 +75,30 @@
                         <span class="glyphicon glyphicon-console" aria-hidden="true"></span>&nbsp; Login
                     </a>
                 </li>
-                <li class= "dropdown {% if url_name == 'logout' %}active{% endif %}">
+                {% if user.is_authenticated %}
+                <li class= "dropdown">
                     <a href="{% url 'events:logout' %}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
                     </a>
                 </li>
-                {% endwith %}
+                {% endif %}
             </ul>
           </div>
         </div>
     </nav>
+    {% endwith %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if user.is_authenticated %}
     <h3>Hello, {{user.get_username}}</h3>
+    {% else %}
+    <h3>You are not logged in</h3>
+    {% endif %}
     {% block main %}
     {% endblock %}
 </body>
