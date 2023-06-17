@@ -150,18 +150,14 @@ class LogOutView(View):
             print("Error logging out")
         return redirect('events:index')
 # TODO: Class versus function
-def search(request):
+class search(ListView):
     #TODO: Search whole site
     search_term = request.GET["query"]
+    print(search_term)
     event_list = Event.objects.filter(name__icontains=search_term)
     event_list = Event.objects.order_by('description')
     context ={
         'event_list': event_list
     }
-    print(event_list)
-    return redirect(request,'events/index.html',context)
-    # event_list = Event.objects.order_by('description')
-    # context ={
-    #     'event_list': event_list
-    # }
-    # return redirect(request,'events/index.html',context)
+    print("Event List: ", event_list)
+    redirect(request,'events/index.html',context)
