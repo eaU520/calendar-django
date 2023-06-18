@@ -152,7 +152,8 @@ class LogOutView(View):
 # TODO: Class versus function
 class search(View):
     #TODO: Search whole site
-    search_term = request.GET["query"]
+    # search_term = request.GET["query"]
+    search_term = "Temp"
     print(search_term)
     event_list = Event.objects.filter(name__icontains=search_term)
     event_list = Event.objects.order_by('description')
@@ -160,4 +161,4 @@ class search(View):
         'event_list': event_list
     }
     print("Event List: ", event_list)
-    redirect(request,'events/index.html',context)
+    # redirect(request,'events/index.html',context)

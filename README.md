@@ -17,8 +17,8 @@ python manage.py runserver 0.0.0.0:8000 - change port
 
 As long as your tests are properly isolated, you can run them in parallel to gain a speed up on multi-core hardware. See test --parallel.
 
-python3 manage.py migrate - updates changes to database
 python3 manage.py makemigrations NAMEOFAPP - updates changes to database
+python3 manage.py migrate - applies changes to database
 
 python3 manage.py sqlmigrate nameofapp 00XXX - number of edit
 
