@@ -7,8 +7,9 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'firstapp/style.css' %}" /> -->
 
-
+#TODO: date time input, just a popup with time also
 {% block main %}
+{% if user.is_authenticated %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-7">
@@ -31,4 +32,5 @@
     </div>
 
 </div>
+{% endif %}
 {% endblock %}
