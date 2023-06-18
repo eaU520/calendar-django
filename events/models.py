@@ -26,7 +26,7 @@ class Event(models.Model):
             name=self.name, start=self.start, duration=self.duration)
         # f"Words words{ var1 + var2} , more words {self.data}"
 
-    def is_coming_up(self):
+    def is_coming_up(self):#TODO Configurable coming up setup
         return self.event >= timezone.now()-datetime.timedelta(days=1)
 
     def get_absolute_url(self):
