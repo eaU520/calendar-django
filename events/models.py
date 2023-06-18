@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 # Create your models here.
+#TODO: Extract hardcoded values/enumerations
 DEADLINE = 'DE'
 FITNESS = 'FI'
 WORK = 'WO'
