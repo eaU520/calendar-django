@@ -118,6 +118,7 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
     def post(self, request):
         form = self.form_class(request.POST)
+        #TODO: Make form password hideable
         #if form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -137,13 +138,13 @@ class LoginView(View):
                 return redirect('events:index')
             else:
                 messages.info(request, "Incorrect credentials")#TODO: Messages as toast or clearer
+        else:
+            messages.info(request, "Incorrect credentials")
         return redirect('events:index')
 class LogOutView(View):
     def get(self,request):
         try:
-            # print("Sessions", request.session['user_id'])
             del request.session['user_id']
-            # del request.session['member_id']
             logout(request)
             messages.info(request, "You have been successfully logged out")
         except KeyError:
