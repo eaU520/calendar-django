@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 DEADLINE = 'DE'
@@ -19,7 +20,8 @@ class Event(models.Model):
     description = models.CharField(max_length=2000)
     start = models.DateTimeField('date start')
     type = models.CharField(max_length=50, choices=types,default="DEADLINE")
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="eventlist", null=True)
+    
     def __str__(self) -> str:
         return "The {name} event starts at {start} and lasts {duration} hours".format(
             name=self.name, start=self.start, duration=self.duration)
@@ -34,15 +36,17 @@ class Event(models.Model):
 class Task(models.Model):
     name = models.CharField(max_length=250)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasklist", null=True)
 
     def get_absolute_url(self):
         return reverse('events:index')
 
     def __str__(self):
         return self.name + " " + self.event.name + " " + str(self.event.start)
-
+#TODO: Login required annotation
 class Note(models.Model):
     details = models.CharField(max_length=250)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="noteslist", null=True)
 
     def get_absolute_url(self):
         return reverse('events:index')
