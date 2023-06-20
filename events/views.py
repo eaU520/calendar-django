@@ -18,8 +18,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
 from django.db.models import Q
+#TODO: rom django.contrib.auth.decorators import login_required
+#@login_required(redirect_field_name="my_redirect_field")
+#def my_view(request):
 
 def index(request):
+    #TODO: Redirect to login/register rather than condditional for logged in if not request.user.is_authenticated:
+    #     return redirect()
     event_list = Event.objects.order_by('start')
     context ={
         'event_list': event_list
@@ -33,11 +38,16 @@ class DetailView(generic.DetailView):
 class EventCreate(CreateView):
     model = Event
     fields = ['name', 'description', 'type', 'start', 'location', 'duration' ]
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(EventCreate, self).form_valid(form)
+    # form.user = request.user
+    #request.user.eventlist.add()
 
 class EventUpdate(UpdateView):
     model = Event
     fields = ['name', 'description', 'type', 'start', 'location', 'duration' ]
-
+    
 class EventDelete(DeleteView):
     model = Event
     success_url= reverse_lazy('events:index')
@@ -52,7 +62,15 @@ def TasksView(request):
 class TaskCreate(CreateView):
     model = Task
     fields = ['name', 'event']
-
+    event_list = Event.objects.filter(user='test')
+    context ={
+        'event_list': event_list
+    }
+    #TODO: I shouldn't need to add the user, as a task is tied to an event and thus a user already
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(TaskCreate, self).form_valid(form)
+        
 class TaskUpdate(UpdateView):
     model = Task
     fields = ['name', 'event']
@@ -66,11 +84,15 @@ def NotesView(request):
     context ={
         'notes_list': notes_list
     }
+    #TODO: API calls, caching info
     return render(request,'events/notes.html',context)
 
 class NoteCreate(CreateView):
     model = Note
     fields = ['details']
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(NoteCreate, self).form_valid(form)
 
 class NoteUpdate(UpdateView):
     model = Note
@@ -118,6 +140,7 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
     def post(self, request):
         form = self.form_class(request.POST)
+        #TODO: Make form password hideable
         #if form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -137,13 +160,13 @@ class LoginView(View):
                 return redirect('events:index')
             else:
                 messages.info(request, "Incorrect credentials")#TODO: Messages as toast or clearer
+        else:
+            messages.info(request, "Incorrect credentials")
         return redirect('events:index')
 class LogOutView(View):
     def get(self,request):
         try:
-            # print("Sessions", request.session['user_id'])
             del request.session['user_id']
-            # del request.session['member_id']
             logout(request)
             messages.info(request, "You have been successfully logged out")
         except KeyError:
