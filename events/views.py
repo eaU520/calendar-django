@@ -62,10 +62,10 @@ def TasksView(request):
 class TaskCreate(CreateView):
     model = Task
     fields = ['name', 'event']
-    event_list = Event.objects.filter(user='test')
+    """ event_list = Event.objects.filter(user='test')
     context ={
         'event_list': event_list
-    }
+    } """
     #TODO: I shouldn't need to add the user, as a task is tied to an event and thus a user already
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -183,5 +183,5 @@ class search(View):
     context ={
         'event_list': event_list
     }
-    print("Event List: ", event_list)
+    # print("Event List: ", event_list)
     # redirect(request,'events/index.html',context)
