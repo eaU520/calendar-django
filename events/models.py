@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.db import models
 from django.utils import timezone
@@ -20,7 +20,7 @@ class Event(models.Model):
     duration = models.FloatField(default=.5,validators=[MinValueValidator(.5), MaxValueValidator(24)])#TODO: Input validation
     location = models.CharField(max_length=300)
     description = models.CharField(max_length=2000)
-    start = models.DateTimeField('date start')
+    start = models.DateTimeField(default = timezone.now)
     type = models.CharField(max_length=50, choices=types,default="DEADLINE")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="eventlist", null=True)
     
