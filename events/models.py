@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 #TODO: Extract hardcoded values/enumerations
@@ -16,7 +17,7 @@ types=[(DEADLINE,"Deadline"), (FITNESS, "Fitness"), (WORK,"Work"), (FUN,"Fun"), 
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
-    duration = models.FloatField(default=.5)
+    duration = models.FloatField(default=.5,validators=[MinValueValidator(.5), MaxValueValidator(24)])#TODO: Input validation
     location = models.CharField(max_length=300)
     description = models.CharField(max_length=2000)
     start = models.DateTimeField('date start')
