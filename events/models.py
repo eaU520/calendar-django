@@ -44,8 +44,13 @@ class Task(models.Model):
         return reverse('events:index')
 
     def __str__(self):
+<<<<<<< HEAD
+        return self.name + " for this event: " + self.event.name + " " + str(self.event.start)
+
+=======
         return self.name + " " + self.event.name + " " + str(self.event.start)
 #TODO: Login required annotation
+>>>>>>> 7f6043b38e9de4d3e8b40af218ddedcb4778c5e2
 class Note(models.Model):
     details = models.CharField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="noteslist", null=True)
