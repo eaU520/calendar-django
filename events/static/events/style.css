@@ -6,7 +6,7 @@ ul {
 body{
     background: rgb(130, 35, 35) url("../events/static/images/background.jpeg");/* no-repeat;*/
 }
-
+/* TODO: Add design: flexible */
 .navbar{
     border-radius: 0;
 }

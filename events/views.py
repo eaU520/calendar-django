@@ -174,14 +174,15 @@ class LogOutView(View):
         return redirect('events:index')
 # TODO: Class versus function
 class search(View):
+    def get(self, request):
     #TODO: Search whole site
-    # search_term = request.GET["query"]
-    search_term = "Temp"
-    print(search_term)
-    event_list = Event.objects.filter(name__icontains=search_term)
-    event_list = Event.objects.order_by('description')
-    context ={
-        'event_list': event_list
-    }
-    # print("Event List: ", event_list)
-    # redirect(request,'events/index.html',context)
+        search_term = request.GET["query"]
+        # search_term = "Temp"
+        print(search_term)
+        event_list = Event.objects.filter(name__icontains=search_term)
+        event_list = Event.objects.order_by('description')
+        context ={
+            'event_list': event_list
+        }
+        # print("Event List: ", event_list)
+        redirect(request,'events/index.html',context)
