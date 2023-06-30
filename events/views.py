@@ -173,7 +173,7 @@ class LogOutView(View):
             print("Error logging out")
         return redirect('events:index')
 # TODO: Class versus function
-class search(View):
+class SearchView(View):
     def get(self, request):
     #TODO: Search whole site
         search_term = request.GET["query"]

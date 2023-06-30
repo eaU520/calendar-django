@@ -52,5 +52,5 @@ urlpatterns = [
     path('logout/', views.LogOutView.as_view(), name='logout'),
 
     #search
-    path('search', views.search.as_view(), name='search'),
+    path('', views.SearchView.as_view(), name='search'),
 ]
